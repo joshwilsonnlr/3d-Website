@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Precision Auto Repair | Advanced Diagnostics & Premium Service</title>
+<meta name="description" content="Experience next-generation auto repair. Advanced computer diagnostics, ASE-certified technicians, brake repair, engine diagnostics, transmission service and more. Book your service today."/>
+<meta name="robots" content="index, follow"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Precision Auto Repair | Advanced Diagnostics & Premium Service"/>
+<meta property="og:description" content="Next-generation interactive automotive repair experience. Precision diagnostics, trusted technicians, same-day service."/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"AutoRepair","name":"Precision Auto Repair","description":"Premium auto repair and diagnostics with ASE-certified technicians.","url":"https://precisionautorepair.example.com","telephone":"+1-555-0100","address":{"@type":"PostalAddress","streetAddress":"1247 Industrial Blvd","addressLocality":"Metro City","addressRegion":"CA","postalCode":"90210","addressCountry":"US"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"07:30","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"08:00","closes":"14:00"}],"priceRange":"$$"}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --electric:#2563eb;--electric-l:#3b82f6;--amber:#f59e0b;
+  --carbon-950:#0d0d0d;--carbon-900:#1a1a1a;--carbon-800:#222;--carbon-700:#333;
+  --carbon-400:#888;--carbon-300:#aaa;--white:#fff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--carbon-950);color:var(--white);overflow-x:hidden;cursor:none}
+body.is-mobile{cursor:auto}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:#1a1a1a}
+::-webkit-scrollbar-thumb{background:#444;border-radius:3px}
+
+/* Custom Cursor */
+#cursor{position:fixed;width:12px;height:12px;border-radius:50%;background:rgba(37,99,235,.85);pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s,border .2s;mix-blend-mode:difference}
+#cursor.expanded{width:48px;height:48px;background:rgba(37,99,235,.25);border:1px solid rgba(37,99,235,.8)}
+#cursor-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:600;letter-spacing:.12em;color:#fff;opacity:0;transition:opacity .2s;white-space:nowrap}
+#cursor.with-label #cursor-label{opacity:1}
+
+/* Loading */
+#loader{position:fixed;inset:0;z-index:100000;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 1.2s ease}
+#loader.done{opacity:0;pointer-events:none}
+.loader-mark{width:64px;height:64px;border:1px solid rgba(37,99,235,.5);display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.loader-mark span{width:28px;height:28px;background:rgba(37,99,235,.2);border:1px solid #3b82f6}
+.loader-brand{font-family:'Orbitron',sans-serif;font-size:22px;letter-spacing:.25em;margin-bottom:20px}
+.loader-stage{color:var(--electric-l);font-size:11px;letter-spacing:.35em;text-transform:uppercase;margin-bottom:28px;min-height:16px}
+.loader-bar-wrap{width:260px;height:2px;background:#222;overflow:hidden}
+.loader-bar{height:100%;width:0%;background:linear-gradient(90deg,#1d4ed8,#3b82f6);transition:width .5s ease}
+.loader-pct{font-size:11px;color:#666;margin-top:12px;font-variant-numeric:tabular-nums}
+
+/* Nav */
+header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 0;transition:all .4s}
+header.scrolled{background:rgba(13,13,13,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);padding:12px 0}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.logo-mark{width:36px;height:36px;border:1px solid rgba(37,99,235,.6);display:flex;align-items:center;justify-content:center}
+.logo-mark span{width:14px;height:14px;background:rgba(37,99,235,.3);border:1px solid #3b82f6}
+.logo-text{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:.2em;font-weight:600}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:#aaa;text-decoration:none;font-size:11px;letter-spacing:.18em;font-weight:500;transition:color .25s}
+.nav-links a:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 32px;font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.btn-primary{background:var(--electric);color:#fff}
+.btn-primary:hover{background:var(--electric-l);box-shadow:0 0 30px rgba(37,99,235,.35)}
+.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.2)}
+.btn-outline:hover{border-color:var(--electric-l);color:var(--electric-l);background:rgba(37,99,235,.08)}
+.btn-amber{background:var(--amber);color:#000}
+.btn-amber:hover{background:#fbbf24;box-shadow:0 0 30px rgba(245,158,11,.35)}
+.nav-cta{padding:10px 20px;font-size:11px}
+.menu-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px}
+.menu-toggle span{display:block;width:24px;height:2px;background:#fff;transition:all .3s}
+.mobile-menu{display:none;position:fixed;inset:0;z-index:999;background:#0d0d0d;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Orbitron',sans-serif;font-size:22px;letter-spacing:.15em;color:#fff;text-decoration:none}
+
+/* Sections common */
+section{position:relative}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.section-label{color:var(--electric-l);font-size:11px;font-weight:600;letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px}
+.section-title{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.section-title .accent{color:var(--electric-l)}
+.section-title .accent-amber{color:var(--amber)}
+.glass{background:rgba(26,26,26,.65);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08)}
+.glass-strong{background:rgba(13,13,13,.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1)}
+
+/* Hero */
+#hero{height:100vh;width:100%;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;z-index:0}
+.hero-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(13,13,13,.95) 0%,transparent 40%,rgba(13,13,13,.5) 100%),linear-gradient(to right,rgba(13,13,13,.7) 0%,transparent 50%);pointer-events:none}
+.hero-content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;max-width:1200px;margin:0 auto;padding:0 24px 100px}
+.hero-content h1{font-family:'Orbitron',sans-serif;font-size:clamp(2.5rem,7vw,5rem);font-weight:700;line-height:1.05;margin-bottom:20px}
+.hero-content h1 .accent{color:var(--electric-l)}
+.hero-sub{color:var(--carbon-300);font-size:clamp(14px,2vw,18px);max-width:420px;line-height:1.6;margin-bottom:36px}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:14px}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.5}
+.scroll-hint span{font-size:9px;letter-spacing:.3em;text-transform:uppercase}
+.scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,#fff,transparent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* Services */
+#services{padding:120px 0;background:var(--carbon-950)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:48px}
+.service-card{padding:28px 22px;transition:all .35s;cursor:pointer;position:relative}
+.service-card:hover{border-color:rgba(37,99,235,.4);transform:translateY(-4px)}
+.service-card .icon{font-size:28px;margin-bottom:14px;opacity:.85}
+.service-card h3{font-size:13px;font-weight:600;letter-spacing:.08em;margin-bottom:8px;transition:color .3s}
+.service-card:hover h3{color:var(--electric-l)}
+.service-card p{font-size:12px;color:var(--carbon-400);line-height:1.55}
+
+/* Interactive Car */
+#garage{padding:100px 0 60px;background:var(--carbon-950)}
+#garage-canvas-wrap{position:relative;width:100%;height:70vh;margin-top:40px}
+#garage-canvas{width:100%;height:100%}
+.hotspot-panel{position:absolute;bottom:24px;left:24px;right:24px;max-width:380px;padding:24px;z-index:10;display:none}
+.hotspot-panel.visible{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.hotspot-panel h3{font-family:'Orbitron',sans-serif;font-size:18px;margin:6px 0 12px}
+.hotspot-panel p{font-size:13px;color:var(--carbon-300);line-height:1.6}
+.hotspot-panel .close-btn{position:absolute;top:12px;right:14px;background:none;border:none;color:#888;font-size:16px;cursor:pointer}
+.garage-hint{text-align:center;font-size:11px;color:#666;letter-spacing:.15em;text-transform:uppercase;margin-top:12px}
+
+/* Diagnostics */
+#diagnostics{padding:100px 0;background:#050a12}
+#diag-canvas-wrap{position:relative;width:100%;height:60vh;margin-top:40px}
+#diag-canvas{width:100%;height:100%}
+.diag-hud{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:28px}
+.diag-hud-top{display:flex;justify-content:space-between}
+.diag-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;max-width:900px;margin:0 auto;width:100%}
+.diag-stat{padding:14px;background:rgba(10,20,40,.7);border:1px solid rgba(37,99,235,.15);backdrop-filter:blur(8px)}
+.diag-stat .label{font-size:9px;letter-spacing:.12em;color:#668;margin-bottom:4px}
+.diag-stat .val{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700}
+.diag-stat .bar{margin-top:8px;height:3px;background:#1a2030;overflow:hidden}
+.diag-stat .bar span{display:block;height:100%;transition:width 1.5s ease}
+
+/* Engine */
+#engine{padding:100px 0;background:var(--carbon-900)}
+.engine-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-top:20px}
+.engine-list{list-style:none;margin-top:24px}
+.engine-list li{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--carbon-300);margin-bottom:12px;line-height:1.5}
+.engine-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--electric-l);margin-top:7px;flex-shrink:0}
+.engine-visual{aspect-ratio:1;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;position:relative;max-width:400px;margin:0 auto}
+.engine-visual::before{content:'';position:absolute;inset:16px;border:1px solid rgba(37,99,235,.2)}
+.engine-spin{width:120px;height:120px;border:1px dashed rgba(59,130,246,.35);display:flex;align-items:center;justify-content:center;animation:spin 12s linear infinite;font-size:48px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Brakes */
+#brakes{padding:100px 0;background:var(--carbon-950)}
+.brake-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+#brake-canvas{width:100%;height:400px}
+.brake-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+.brake-card{padding:16px}
+.brake-card h4{font-size:13px;color:var(--amber);margin-bottom:6px}
+.brake-card p{font-size:12px;color:var(--carbon-400);line-height:1.5}
+
+/* Before After */
+#transform{padding:100px 0;background:var(--carbon-900)}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:48px;min-height:320px;position:relative}
+.ba-side{padding:40px;border:1px solid rgba(255,255,255,.06);position:relative}
+.ba-side.before{background:rgba(13,13,13,.8)}
+.ba-side.after{background:rgba(13,13,13,.6);border-color:rgba(37,99,235,.2)}
+.ba-tag{font-size:10px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:24px}
+.ba-side.before .ba-tag{color:#666}
+.ba-side.after .ba-tag{color:var(--electric-l)}
+.ba-bars{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.ba-bar{height:10px;border-radius:2px}
+.ba-side.before .ba-bar{background:#2a2a2a}
+.ba-side.after .ba-bar{background:rgba(37,99,235,.3)}
+.ba-side p{font-size:13px;color:var(--carbon-400);line-height:1.6}
+.ba-divider{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--electric-l),transparent);transform:translateX(-50%)}
+
+/* Why Us */
+#why{padding:100px 0;background:var(--carbon-950)}
+.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:48px}
+.stat-card{padding:32px 16px;text-align:center;transition:border-color .3s}
+.stat-card:hover{border-color:rgba(37,99,235,.3)}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--electric-l);margin-bottom:8px}
+.stat-label{font-size:10px;letter-spacing:.15em;color:var(--carbon-400);text-transform:uppercase}
+
+/* Reviews */
+#reviews{padding:100px 0;background:var(--carbon-900)}
+.review-card{max-width:700px;margin:48px auto 0;padding:48px 40px;text-align:center;position:relative;min-height:260px}
+.stars{color:var(--amber);font-size:18px;letter-spacing:4px;margin-bottom:24px}
+.review-text{font-size:clamp(15px,2vw,19px);color:#ccc;line-height:1.7;margin-bottom:28px;font-style:italic}
+.review-name{font-weight:600;letter-spacing:.05em}
+.review-vehicle{font-size:13px;color:var(--carbon-400);margin-top:4px}
+.review-nav{display:flex;justify-content:center;gap:8px;margin-top:24px}
+.review-nav button{width:40px;height:40px;border:1px solid rgba(255,255,255,.15);background:none;color:#fff;cursor:pointer;transition:border-color .25s;font-size:16px}
+.review-nav button:hover{border-color:var(--electric-l)}
+.review-dots{display:flex;justify-content:center;gap:8px;margin-top:16px}
+.review-dots button{width:8px;height:8px;border-radius:50%;border:none;background:#444;cursor:pointer;padding:0}
+.review-dots button.active{background:var(--electric-l)}
+
+/* Booking */
+#booking{padding:100px 0;background:var(--carbon-950)}
+.booking-form{max-width:640px;margin:48px auto 0;padding:40px;display:grid;gap:18px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--carbon-400)}
+.form-group input,.form-group select,.form-group textarea{
+  background:#111;border:1px solid rgba(255,255,255,.1);color:#fff;padding:12px 14px;font-size:14px;font-family:inherit;outline:none;transition:border-color .25s;width:100%
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--electric)}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-error{color:#f87171;font-size:11px}
+.form-success{text-align:center;padding:60px 20px}
+.form-success h3{font-family:'Orbitron',sans-serif;font-size:24px;color:var(--electric-l);margin-bottom:12px}
+
+/* Contact */
+#contact{padding:100px 0;background:var(--carbon-900)}
+.emergency-box{padding:48px;text-align:center;border-color:rgba(245,158,11,.25)!important;margin-bottom:60px}
+.emergency-ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:28px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.contact-info h3{font-family:'Orbitron',sans-serif;font-size:18px;margin-bottom:28px}
+.contact-info dl{display:grid;gap:20px}
+.contact-info dt{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin-bottom:4px}
+.contact-info dd{font-size:14px;color:var(--carbon-300)}
+.contact-info a{color:var(--electric-l);text-decoration:none}
+.contact-info a:hover{text-decoration:underline}
+.map-placeholder{aspect-ratio:4/3;background:#0d0d0d;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;position:relative}
+.map-placeholder .grid-bg{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:40px 40px}
+
+/* Footer */
+footer{border-top:1px solid rgba(255,255,255,.05);padding:40px 0;background:var(--carbon-950)}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:12px;color:#666;text-decoration:none;transition:color .25s}
+.footer-links a:hover{color:#fff}
+.footer-copy{font-size:12px;color:#555}
+
+/* Sound toggle */
+#sound-btn{position:fixed;bottom:24px;right:24px;z-index:900;width:42px;height:42px;border:1px solid rgba(255,255,255,.12);background:rgba(13,13,13,.8);backdrop-filter:blur(12px);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .25s}
+#sound-btn:hover{border-color:var(--electric-l)}
+
+/* Reveal animations */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Responsive */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .menu-toggle{display:flex}
+  .nav-cta{display:none}
+  .engine-grid,.brake-grid,.ba-grid,.contact-grid{grid-template-columns:1fr}
+  .ba-divider{display:none}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid .stat-card:last-child{grid-column:1/-1}
+  .diag-stats{grid-template-columns:repeat(2,1fr)}
+  .form-row{grid-template-columns:1fr}
+  .hero-content{padding-bottom:80px;justify-content:flex-end}
+  #garage-canvas-wrap{height:55vh}
+  #diag-canvas-wrap{height:50vh}
+}
+@media(max-width:600px){
+  .services-grid{grid-template-columns:1fr 1fr}
+  .brake-cards{grid-template-columns:1fr}
+  .diag-stats{grid-template-columns:1fr 1fr}
+  .review-card{padding:32px 20px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+:focus-visible{outline:2px solid var(--electric);outline-offset:3px}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div id="cursor" aria-hidden="true"><span id="cursor-label"></span></div>
+
+<!-- Loading Screen -->
+<div id="loader">
+  <div class="loader-mark"><span></span></div>
+  <div class="loader-brand">PRECISION</div>
+  <div class="loader-stage" id="loader-stage">INITIALIZING GARAGE...</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+  <div class="loader-pct" id="loader-pct">0%</div>
+</div>
+
+<!-- Navigation -->
+<header id="header">
+  <div class="nav-inner">
+    <a href="#hero" class="logo" data-cursor="open">
+      <div class="logo-mark"><span></div>
+      <span class="logo-text">PRECISION</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#hero" data-cursor="open">HOME</a></li>
+        <li><a href="#services" data-cursor="open">SERVICES</a></li>
+        <li><a href="#diagnostics" data-cursor="open">DIAGNOSTICS</a></li>
+        <li><a href="#garage" data-cursor="open">3D GARAGE</a></li>
+        <li><a href="#reviews" data-cursor="open">REVIEWS</a></li>
+        <li><a href="#contact" data-cursor="open">CONTACT</a></li>
+      </ul>
+    </nav>
+    <a href="#booking" class="btn btn-primary nav-cta" data-cursor="button">BOOK SERVICE</a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#hero" data-close>HOME</a>
+  <a href="#services" data-close>SERVICES</a>
+  <a href="#diagnostics" data-close>DIAGNOSTICS</a>
+  <a href="#garage" data-close>3D GARAGE</a>
+  <a href="#reviews" data-close>REVIEWS</a>
+  <a href="#contact" data-close>CONTACT</a>
+  <a href="#booking" class="btn btn-primary" data-close style="margin-top:12px">BOOK SERVICE</a>
+</div>
+
+<main>
+<!-- ========== HERO ========== -->
+<section id="hero" aria-label="Hero - Enter the Garage">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="section-label reveal">ENTER THE GARAGE</p>
+    <h1 class="reveal">YOUR CAR<br>DESERVES<br><span class="accent">BETTER.</span></h1>
+    <p class="hero-sub reveal">Advanced Auto Repair. Precision Diagnostics. Trusted Technicians.</p>
+    <div class="hero-ctas reveal">
+      <a href="#booking" class="btn btn-primary" data-cursor="button">BOOK A SERVICE</a>
+      <a href="#services" class="btn btn-outline" data-cursor="button">EXPLORE OUR SERVICES</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- ========== SERVICES ========== -->
+<section id="services" aria-labelledby="services-heading">
+  <div class="container">
+    <p class="section-label reveal">WHAT WE DO</p>
+    <h2 class="section-title reveal" id="services-heading">FULL-SERVICE<br><span class="accent">GARAGE.</span></h2>
+    <p class="reveal" style="color:var(--carbon-300);max-width:480px;margin-top:16px;line-height:1.7;font-size:15px">From routine maintenance to complex repairs—every service is performed with precision tools, OEM-quality parts and transparent communication.</p>
+    <div class="services-grid" id="services-grid"></div>
+  </div>
+</section>
+
+<!-- ========== INTERACTIVE 3D CAR ========== -->
+<section id="garage" aria-labelledby="garage-heading">
+  <div class="container">
+    <p class="section-label reveal">INTERACTIVE INSPECTION</p>
+    <h2 class="section-title reveal" id="garage-heading">INSPECT EVERY<br><span class="accent">COMPONENT.</span></h2>
+    <p class="reveal" style="color:var(--carbon-300);max-width:480px;margin-top:16px;line-height:1.7;font-size:15px">Rotate, zoom and explore the vehicle. Click any hotspot to learn how we diagnose and repair that system.</p>
+  </div>
+  <div id="garage-canvas-wrap">
+    <canvas id="garage-canvas"></canvas>
+    <div class="hotspot-panel glass-strong" id="hotspot-panel">
+      <button class="close-btn" id="hotspot-close" aria-label="Close">✕</button>
+      <p class="section-label" id="hs-label"></p>
+      <h3 id="hs-title"></h3>
+      <p id="hs-desc"></p>
+      <a href="#booking" style="display:inline-block;margin-top:14px;color:var(--electric-l);font-size:11px;font-weight:600;letter-spacing:.1em;text-decoration:none" data-cursor="open">BOOK THIS SERVICE →</a>
+    </div>
+  </div>
+  <p class="garage-hint">Drag to rotate · Scroll to zoom · Click hotspots to inspect</p>
+</section>
+
+<!-- ========== DIAGNOSTICS ========== -->
+<section id="diagnostics" aria-labelledby="diag-heading">
+  <div class="container" style="text-align:center">
+    <p class="section-label reveal">SEE WHAT WE SEE</p>
+    <h2 class="section-title reveal" id="diag-heading">ADVANCED<br><span class="accent">DIAGNOSTICS.</span></h2>
+    <p class="reveal" style="color:var(--carbon-300);max-width:560px;margin:16px auto 0;line-height:1.7;font-size:15px">Our digital diagnostic platform scans engine, transmission, brakes, battery and suspension systems in real time. You see the same data our technicians use.</p>
+  </div>
+  <div id="diag-canvas-wrap">
+    <canvas id="diag-canvas"></canvas>
+    <div class="diag-hud">
+      <div class="diag-hud-top">
+        <div>
+          <p style="color:var(--electric-l);font-size:10px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:4px">LIVE DIAGNOSTIC</p>
+          <p style="font-family:'Orbitron',sans-serif;font-size:15px">VEHICLE SCAN IN PROGRESS</p>
+        </div>
+        <div style="text-align:right">
+          <p style="color:#556;font-size:10px">SCAN ID</p>
+          <p style="font-family:monospace;font-size:13px;color:var(--electric-l)">#DX-88421</p>
+        </div>
+      </div>
+      <div class="diag-stats" id="diag-stats"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ENGINE ========== -->
+<section id="engine" aria-labelledby="engine-heading">
+  <div class="container">
+    <div class="engine-grid">
+      <div>
+        <p class="section-label reveal">UNDER THE HOOD</p>
+        <h2 class="section-title reveal" id="engine-heading">PRECISION<br><span class="accent">UNDER THE HOOD.</span></h2>
+        <p class="reveal" style="color:var(--carbon-300);margin-top:16px;line-height:1.7;font-size:15px">Our technicians use factory-level diagnostic software, compression testing, leak-down analysis and thermal imaging to pinpoint engine issues with surgical accuracy.</p>
+        <ul class="engine-list reveal">
+          <li>Computerized engine management diagnostics</li>
+          <li>Timing, compression &amp; leak-down testing</li>
+          <li>Fuel system &amp; injector service</li>
+          <li>Turbocharger &amp; emissions diagnostics</li>
+          <li>OEM and performance-grade parts</li>
+        </ul>
+      </div>
+      <div class="engine-visual reveal">
+        <div class="engine-spin">⚙️</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BRAKES ========== -->
+<section id="brakes" aria-labelledby="brake-heading">
+  <div class="container">
+    <div class="brake-grid">
+      <div>
+        <p class="section-label reveal">STOPPING POWER</p>
+        <h2 class="section-title reveal" id="brake-heading">BRAKE SYSTEM<br><span class="accent-amber">MASTERY.</span></h2>
+        <p class="reveal" style="color:var(--carbon-300);margin-top:16px;line-height:1.7;font-size:15px">Brakes are safety-critical. We inspect, measure and service every component to factory specifications—never cutting corners on friction material or fluid quality.</p>
+        <div class="brake-cards reveal" id="brake-cards"></div>
+      </div>
+      <canvas id="brake-canvas"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ========== BEFORE / AFTER ========== -->
+<section id="transform" aria-label="Before and After">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label reveal">TRANSFORMATION</p>
+      <h2 class="section-title reveal">BEFORE → <span class="accent">AFTER</span></h2>
+    </div>
+    <div class="ba-grid reveal">
+      <div class="ba-divider"></div>
+      <div class="ba-side before">
+        <div class="ba-tag">Before</div>
+        <div class="ba-bars">
+          <div class="ba-bar" style="width:75%"></div>
+          <div class="ba-bar" style="width:50%"></div>
+          <div class="ba-bar" style="width:65%"></div>
+        </div>
+        <p>Worn pads, contaminated fluid, warning lights, rough idle, neglected maintenance. Problems that only get more expensive when ignored.</p>
+      </div>
+      <div class="ba-side after">
+        <div class="ba-tag">After</div>
+        <div class="ba-bars">
+          <div class="ba-bar" style="width:75%"></div>
+          <div class="ba-bar" style="width:50%"></div>
+          <div class="ba-bar" style="width:65%"></div>
+        </div>
+        <p>Quiet braking, smooth acceleration, clear diagnostics, documented service history and a vehicle you can trust on every drive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== WHY US ========== -->
+<section id="why" aria-labelledby="why-heading">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label reveal">WHY PRECISION</p>
+      <h2 class="section-title reveal" id="why-heading">BUILT ON<br><span class="accent">TRUST.</span></h2>
+    </div>
+    <div class="stats-grid" id="stats-grid"></div>
+  </div>
+</section>
+
+<!-- ========== REVIEWS ========== -->
+<section id="reviews" aria-labelledby="reviews-heading">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label reveal">TESTIMONIALS</p>
+      <h2 class="section-title reveal" id="reviews-heading">WHAT DRIVERS<br><span class="accent">SAY.</span></h2>
+    </div>
+    <div class="review-card glass-strong reveal" id="review-card">
+      <div class="stars" id="review-stars">★★★★★</div>
+      <p class="review-text" id="review-text"></p>
+      <p class="review-name" id="review-name"></p>
+      <p class="review-vehicle" id="review-vehicle"></p>
+    </div>
+    <div class="review-nav">
+      <button id="review-prev" aria-label="Previous review" data-cursor="button">←</button>
+      <button id="review-next" aria-label="Next review" data-cursor="button">→</button>
+    </div>
+    <div class="review-dots" id="review-dots"></div>
+  </div>
+</section>
+
+<!-- ========== BOOKING ========== -->
+<section id="booking" aria-labelledby="booking-heading">
+  <div class="container">
+    <div style="text-align:center">
+      <p class="section-label reveal">APPOINTMENT</p>
+      <h2 class="section-title reveal" id="booking-heading">GET YOUR CAR<br><span class="accent">BACK ON THE ROAD.</span></h2>
+    </div>
+    <form class="booking-form glass-strong reveal" id="booking-form" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Name *</label>
+          <input type="text" id="name" name="name" required autocomplete="name"/>
+          <span class="form-error" id="err-name"></span>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone *</label>
+          <input type="tel" id="phone" name="phone" required autocomplete="tel"/>
+          <span class="form-error" id="err-phone"></span>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required autocomplete="email"/>
+        <span class="form-error" id="err-email"></span>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="make">Vehicle Make</label>
+          <input type="text" id="make" name="make" placeholder="e.g. BMW"/>
+        </div>
+        <div class="form-group">
+          <label for="model">Vehicle Model</label>
+          <input type="text" id="model" name="model" placeholder="e.g. M340i"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="year">Year</label>
+          <input type="number" id="year" name="year" min="1990" max="2027" placeholder="2021"/>
+        </div>
+        <div class="form-group">
+          <label for="service">Service Required *</label>
+          <select id="service" name="service" required>
+            <option value="" disabled selected>Select a service</option>
+            <option>Oil Change</option>
+            <option>Brake Repair</option>
+            <option>Engine Diagnostics</option>
+            <option>Transmission Service</option>
+            <option>Tire Service</option>
+            <option>Battery Replacement</option>
+            <option>AC Repair</option>
+            <option>Suspension / Alignment</option>
+            <option>General Inspection</option>
+            <option>Other</option>
+          </select>
+          <span class="form-error" id="err-service"></span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date">Preferred Date</label>
+          <input type="date" id="date" name="date"/>
+        </div>
+        <div class="form-group">
+          <label for="time">Preferred Time</label>
+          <input type="time" id="time" name="time"/>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="3" placeholder="Anything we should know?"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%" data-cursor="button">BOOK MY SERVICE</button>
+    </form>
+    <div class="form-success glass-strong" id="form-success" style="display:none;max-width:640px;margin:48px auto 0">
+      <h3>REQUEST RECEIVED</h3>
+      <p style="color:var(--carbon-300)">We'll confirm your appointment shortly via phone or email.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section id="contact" aria-labelledby="contact-heading">
+  <div class="container">
+    <div class="emergency-box glass-strong reveal">
+      <p class="section-label" style="color:var(--amber)">EMERGENCY</p>
+      <h2 class="section-title" id="contact-heading">CAR TROUBLE?<br><span class="accent-amber">WE'RE HERE TO HELP.</span></h2>
+      <div class="emergency-ctas">
+        <a href="tel:+15550100" class="btn btn-amber" data-cursor="button">CALL NOW</a>
+        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn btn-outline" data-cursor="open">GET DIRECTIONS</a>
+        <a href="#booking" class="btn btn-outline" data-cursor="button">BOOK SERVICE</a>
+      </div>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <h3>Precision Auto Repair</h3>
+        <dl>
+          <div><dt>Phone</dt><dd><a href="tel:+15550100">(555) 010-0100</a></dd></div>
+          <div><dt>Email</dt><dd><a href="mailto:service@precisionauto.example.com">service@precisionauto.example.com</a></dd></div>
+          <div><dt>Address</dt><dd>1247 Industrial Blvd<br>Metro City, CA 90210</dd></div>
+          <div><dt>Hours</dt><dd>Mon–Fri: 7:30 AM – 6:00 PM<br>Sat: 8:00 AM – 2:00 PM<br>Sun: Closed</dd></div>
+        </dl>
+      </div>
+      <div class="map-placeholder">
+        <div class="grid-bg"></div>
+        <div style="position:relative;z-index:1;text-align:center">
+          <p style="color:#555;font-size:13px;margin-bottom:8px">Interactive Map</p>
+          <a href="https://maps.google.com" target="_blank" rel="noopener" style="color:var(--electric-l);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none" data-cursor="open">Open in Google Maps →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <a href="#hero" class="logo" data-cursor="open">
+      <div class="logo-mark"><span></div>
+      <span class="logo-text">PRECISION</span>
+    </a>
+    <p class="footer-copy">© 2026 Precision Auto Repair. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#booking">Book</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<button id="sound-btn" aria-label="Toggle ambient sound" title="Sound is off by default" data-cursor="button">🔇</button>
+
+<!-- Three.js + Controls -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script src="gltf-loader.js"></script>
+<script src="CopyShader.js"></script>
+<script src="LuminosityHighPassShader.js"></script>
+<script src="Pass.js"></script>
+<script src="EffectComposer.js"></script>
+<script src="RenderPass.js"></script>
+<script src="ShaderPass.js"></script>
+<script src="UnrealBloomPass.js"></script>
+<script src="enhanced-3d.js"></script>
+
+<script>
+/* ============================================================
+   PRECISION AUTO REPAIR — Complete Cinematic Website
+   ============================================================ */
+
+(function(){
+'use strict';
+
+/* ---------- DATA ---------- */
+const SERVICES = [
+  {icon:'🛢️',title:'Oil Change',desc:'Synthetic & conventional. Full filter replacement and multi-point inspection.'},
+  {icon:'🛑',title:'Brake Repair',desc:'Pads, rotors, fluid flush and complete brake system diagnostics.'},
+  {icon:'⚙️',title:'Engine Diagnostics',desc:'Advanced OBD scanning, performance testing and root-cause analysis.'},
+  {icon:'🔧',title:'Transmission Repair',desc:'Fluid service, solenoid diagnostics and complete rebuilds when needed.'},
+  {icon:'🛞',title:'Tire Service',desc:'Mount, balance, rotate and align. Major brands in stock.'},
+  {icon:'🔋',title:'Battery Replacement',desc:'Testing, replacement and charging-system diagnosis for all vehicles.'},
+  {icon:'❄️',title:'AC Repair',desc:'Performance test, leak detection, recharge and compressor service.'},
+  {icon:'📐',title:'Suspension Repair',desc:'Shocks, struts, control arms and precision alignment.'},
+  {icon:'🎯',title:'Wheel Alignment',desc:'4-wheel laser alignment to restore handling and tire life.'},
+  {icon:'📋',title:'Preventive Maintenance',desc:'Scheduled service packages that keep your vehicle reliable longer.'},
+];
+
+const HOTSPOTS = [
+  {id:'engine',label:'ENGINE',title:'ENGINE DIAGNOSTICS',desc:'Advanced computer diagnostics to identify performance issues before they become expensive repairs. We scan all systems and provide a clear report.',pos:[0,1.0,1.6]},
+  {id:'brakes',label:'BRAKES',title:'BRAKE SYSTEM',desc:'Complete brake inspection, pad replacement, rotor service and fluid flush. Safety-critical systems handled by ASE-certified technicians.',pos:[-1.1,0.4,1.3]},
+  {id:'tires',label:'TIRES',title:'TIRE SERVICE',desc:'Mounting, balancing, rotation and alignment. We carry major brands and can match your driving style and climate needs.',pos:[1.1,0.35,1.3]},
+  {id:'suspension',label:'SUSPENSION',title:'SUSPENSION REPAIR',desc:'Shocks, struts, control arms and bushings. Restore ride quality and handling with precision measurements and quality parts.',pos:[-0.9,0.6,-0.5]},
+  {id:'battery',label:'BATTERY',title:'BATTERY & ELECTRICAL',desc:'Battery testing, replacement and charging system diagnosis. We support modern start-stop and hybrid systems.',pos:[0.6,0.9,1.5]},
+  {id:'transmission',label:'TRANS',title:'TRANSMISSION SERVICE',desc:'Fluid service, diagnostics and repair for automatic and manual transmissions. Early detection prevents major failures.',pos:[0,0.5,-0.3]},
+  {id:'exhaust',label:'EXHAUST',title:'EXHAUST SYSTEM',desc:'Catalytic converters, mufflers, oxygen sensors and full exhaust diagnostics. Emissions-compliant repairs.',pos:[0,0.35,-2.0]},
+  {id:'ac',label:'A/C',title:'AIR CONDITIONING',desc:'Performance testing, refrigerant recharge, leak detection and compressor service. Stay comfortable year-round.',pos:[0.5,1.1,0.5]},
+];
+
+const DIAG_STATS = [
+  {label:'ENGINE HEALTH',value:94,color:'#22c55e'},
+  {label:'BRAKE SYSTEM',value:87,color:'#eab308'},
+  {label:'BATTERY',value:96,color:'#22c55e'},
+  {label:'TRANSMISSION',value:91,color:'#22c55e'},
+  {label:'SUSPENSION',value:88,color:'#eab308'},
+];
+
+const BRAKE_SERVICES = [
+  {title:'Brake Inspection',desc:'Complete visual and performance check of pads, rotors, lines and fluid.'},
+  {title:'Brake Pad Replacement',desc:'OEM-spec or performance pads with hardware and lubrication.'},
+  {title:'Rotor Service',desc:'Resurface or replace rotors for smooth, vibration-free braking.'},
+  {title:'Brake Fluid Service',desc:'Flush contaminated fluid and bleed the system for optimal response.'},
+];
+
+const STATS = [
+  {value:'10+',label:'YEARS EXPERIENCE'},
+  {value:'5,000+',label:'VEHICLES SERVICED'},
+  {value:'ASE',label:'CERTIFIED TECHNICIANS'},
+  {value:'12-MO',label:'WARRANTY'},
+  {value:'SAME',label:'DAY SERVICE'},
+];
+
+const REVIEWS = [
+  {name:'Marcus T.',vehicle:'2021 BMW M340i',stars:5,text:'They found an intermittent misfire that two other shops missed. Transparent pricing and the car feels brand new. Highly recommend.'},
+  {name:'Sarah K.',vehicle:'2019 Honda CR-V',stars:5,text:'Same-day brake job, clean facility, and they explained every step. My go-to shop from now on.'},
+  {name:'James L.',vehicle:'2018 Ford F-150',stars:5,text:'Transmission service was done right the first time. Honest advice and no upselling. Rare these days.'},
+  {name:'Elena R.',vehicle:'2020 Tesla Model 3',stars:5,text:'Impressed they handle EVs with the same care. Diagnostic report was detailed and easy to understand.'},
+];
+
+/* ---------- HELPERS ---------- */
+const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+if(isMobile) document.body.classList.add('is-mobile');
+
+function createCar(color){
+  // Use enhanced detailed procedural car when available
+  if(window.PRECISION_3D && PRECISION_3D.makeDetailedCar){
+    return PRECISION_3D.makeDetailedCar(color);
+  }
+  const g = new THREE.Group();
+  const bodyMat = new THREE.MeshStandardMaterial({color:color||0x1a1a1a,metalness:0.85,roughness:0.25});
+  const glassMat = new THREE.MeshPhysicalMaterial({color:0x111111,metalness:0,roughness:0.05,transmission:0.5,transparent:true,opacity:0.8});
+  const chromeMat = new THREE.MeshStandardMaterial({color:0xc0c0c0,metalness:1,roughness:0.1});
+  const tireMat = new THREE.MeshStandardMaterial({color:0x111111,metalness:0.1,roughness:0.9});
+  const body = new THREE.Mesh(new THREE.BoxGeometry(1.9,0.45,4.2),bodyMat);
+  body.position.y=0.55; body.castShadow=true; g.add(body);
+  const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.55,2.0),bodyMat);
+  cabin.position.set(0,1.05,-0.2); cabin.castShadow=true; g.add(cabin);
+  const ws = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.5,0.08),glassMat);
+  ws.position.set(0,1.05,0.85); ws.rotation.x=-0.35; g.add(ws);
+  const rw = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.45,0.08),glassMat);
+  rw.position.set(0,1.05,-1.15); rw.rotation.x=0.3; g.add(rw);
+  const hood = new THREE.Mesh(new THREE.BoxGeometry(1.7,0.08,1.1),bodyMat);
+  hood.position.set(0,0.8,1.4); g.add(hood);
+  [[-0.85,0.35,1.35],[0.85,0.35,1.35],[-0.85,0.35,-1.35],[0.85,0.35,-1.35]].forEach(function(p){
+    const wg = new THREE.Group(); wg.position.set(p[0],p[1],p[2]);
+    const tire = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.35,0.28,24),tireMat);
+    tire.rotation.z=Math.PI/2; tire.castShadow=true; wg.add(tire);
+    const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.3,16),chromeMat);
+    rim.rotation.z=Math.PI/2; wg.add(rim); g.add(wg);
+  });
+  const hlMat = new THREE.MeshStandardMaterial({color:0xe0f0ff,emissive:0xaaccff,emissiveIntensity:0.6});
+  [-0.6,0.6].forEach(function(x){ const hl = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.15,0.08),hlMat); hl.position.set(x,0.55,2.12); g.add(hl); });
+  const tlMat = new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff0000,emissiveIntensity:0.8});
+  [-0.65,0.65].forEach(function(x){ const tl = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.12,0.06),tlMat); tl.position.set(x,0.6,-2.12); g.add(tl); });
+  return g;
+}
+
+function createGarageEnv(scene){
+  // Full workshop: lifts, tool cabinets, benches, tires, computers, mechanics, engines, doors, lights
+  if(window.PRECISION_3D && PRECISION_3D.buildWorkshop){
+    PRECISION_3D.buildWorkshop(scene);
+    return;
+  }
+  const floorMat = new THREE.MeshStandardMaterial({color:0x1a1a1a,metalness:0.3,roughness:0.7});
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(30,30),floorMat);
+  floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
+  scene.add(new THREE.GridHelper(30,30,0x222222,0x1a1a1a).translateY(0.01));
+  const wallMat = new THREE.MeshStandardMaterial({color:0x141414,metalness:0.1,roughness:0.9});
+  const back = new THREE.Mesh(new THREE.PlaneGeometry(30,10),wallMat); back.position.set(0,4,-10); scene.add(back);
+  const metalMat = new THREE.MeshStandardMaterial({color:0x333333,metalness:0.8,roughness:0.3});
+  [-6,-3,3,6].forEach(function(x){ const cab = new THREE.Mesh(new THREE.BoxGeometry(1.8,2.4,0.8),metalMat); cab.position.set(x,1.2,-8.5); cab.castShadow=true; scene.add(cab); });
+  const lift = new THREE.Mesh(new THREE.BoxGeometry(3.5,0.3,5),new THREE.MeshStandardMaterial({color:0x222222,metalness:0.6,roughness:0.4})); lift.position.y=0.15; scene.add(lift);
+  [-4,0,4].forEach(function(x,i){
+    const lightMesh = new THREE.Mesh(new THREE.BoxGeometry(2.5,0.15,0.4), new THREE.MeshStandardMaterial({color:0x111111,emissive:0x4488ff,emissiveIntensity:0.8}));
+    lightMesh.position.set(x,7.5,-2); scene.add(lightMesh);
+    const pl = new THREE.PointLight(0x88aaff,1.2,12); pl.position.set(x,7.2,-2); if(i===1) pl.castShadow=true; scene.add(pl);
+  });
+  scene.add(new THREE.PointLight(0xf59e0b,0.6,10).translateX(-8).translateY(3).translateZ(2));
+  scene.add(new THREE.PointLight(0xf59e0b,0.6,10).translateX(8).translateY(3).translateZ(2));
+}
+
+function createParticles(scene,count){
+  count = count || (isMobile?150:600);
+  const positions = new Float32Array(count*3);
+  const velocities = [];
+  for(let i=0;i<count;i++){
+    positions[i*3]=(Math.random()-0.5)*20;
+    positions[i*3+1]=Math.random()*8;
+    positions[i*3+2]=(Math.random()-0.5)*20;
+    velocities.push({x:(Math.random()-0.5)*0.002,y:Math.random()*0.004+0.001,z:(Math.random()-0.5)*0.002});
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  const mat = new THREE.PointsMaterial({size:0.03,color:0x88aacc,transparent:true,opacity:0.4,sizeAttenuation:true,depthWrite:false});
+  const points = new THREE.Points(geo,mat);
+  scene.add(points);
+  return {points:points,velocities:velocities,count:count};
+}
+
+/* ---------- LOADER ---------- */
+const stages = [
+  {label:'INITIALIZING GARAGE...',pct:10},
+  {label:'LOADING 3D MODELS',pct:25},
+  {label:'ENGINE SYSTEMS',pct:40},
+  {label:'BRAKE SYSTEMS',pct:55},
+  {label:'WORKSHOP PROPS',pct:70},
+  {label:'POST-PROCESSING',pct:85},
+  {label:'SYSTEM READY',pct:100},
+];
+let stageIdx=0;
+const loaderEl=document.getElementById('loader');
+const stageEl=document.getElementById('loader-stage');
+const barEl=document.getElementById('loader-bar');
+const pctEl=document.getElementById('loader-pct');
+
+function advanceLoader(){
+  if(stageIdx>=stages.length){
+    setTimeout(function(){
+      loaderEl.classList.add('done');
+      setTimeout(function(){loaderEl.style.display='none';initReveals();},1300);
+    },400);
+    return;
+  }
+  stageEl.textContent=stages[stageIdx].label;
+  barEl.style.width=stages[stageIdx].pct+'%';
+  pctEl.textContent=stages[stageIdx].pct+'%';
+  stageIdx++;
+  setTimeout(advanceLoader,650);
+}
+setTimeout(advanceLoader,300);
+
+/* ---------- CUSTOM CURSOR ---------- */
+const cursor=document.getElementById('cursor');
+const cursorLabel=document.getElementById('cursor-label');
+if(!isMobile){
+  document.addEventListener('mousemove',function(e){
+    cursor.style.left=e.clientX+'px';
+    cursor.style.top=e.clientY+'px';
+  });
+  document.addEventListener('mouseover',function(e){
+    const t=e.target.closest('[data-cursor]');
+    if(t){
+      cursor.classList.add('expanded');
+      const type=t.getAttribute('data-cursor');
+      if(type==='explore'){cursorLabel.textContent='EXPLORE';cursor.classList.add('with-label');}
+      else if(type==='inspect'){cursorLabel.textContent='INSPECT';cursor.classList.add('with-label');}
+      else if(type==='open'){cursorLabel.textContent='OPEN';cursor.classList.add('with-label');}
+      else{cursorLabel.textContent='';cursor.classList.remove('with-label');}
+    }
+  });
+  document.addEventListener('mouseout',function(e){
+    if(!e.relatedTarget||!e.relatedTarget.closest('[data-cursor]')){
+      cursor.classList.remove('expanded','with-label');
+      cursorLabel.textContent='';
+    }
+  });
+} else {
+  cursor.style.display='none';
+}
+
+/* ---------- NAV ---------- */
+const header=document.getElementById('header');
+window.addEventListener('scroll',function(){
+  header.classList.toggle('scrolled',window.scrollY>80);
+},{passive:true});
+
+const menuToggle=document.getElementById('menu-toggle');
+const mobileMenu=document.getElementById('mobile-menu');
+menuToggle.addEventListener('click',function(){
+  const open=mobileMenu.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded',open);
+  document.body.style.overflow=open?'hidden':'';
+});
+mobileMenu.querySelectorAll('[data-close]').forEach(function(a){
+  a.addEventListener('click',function(){
+    mobileMenu.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded','false');
+    document.body.style.overflow='';
+  });
+});
+
+/* ---------- POPULATE STATIC CONTENT ---------- */
+const sg=document.getElementById('services-grid');
+SERVICES.forEach(function(s){
+  const card=document.createElement('article');
+  card.className='service-card glass reveal';
+  card.setAttribute('data-cursor','explore');
+  card.tabIndex=0;
+  card.innerHTML='<div class="icon">'+s.icon+'</div><h3>'+s.title+'</h3><p>'+s.desc+'</p>';
+  sg.appendChild(card);
+});
+
+const bc=document.getElementById('brake-cards');
+BRAKE_SERVICES.forEach(function(s){
+  const d=document.createElement('div');
+  d.className='brake-card glass';
+  d.innerHTML='<h4>'+s.title+'</h4><p>'+s.desc+'</p>';
+  bc.appendChild(d);
+});
+
+const stg=document.getElementById('stats-grid');
+STATS.forEach(function(s){
+  const d=document.createElement('div');
+  d.className='stat-card glass reveal';
+  d.innerHTML='<div class="stat-val">'+s.value+'</div><div class="stat-label">'+s.label+'</div>';
+  stg.appendChild(d);
+});
+
+const ds=document.getElementById('diag-stats');
+DIAG_STATS.forEach(function(s){
+  const d=document.createElement('div');
+  d.className='diag-stat';
+  d.innerHTML='<div class="label">'+s.label+'</div><div class="val" style="color:'+s.color+'">'+s.value+'%</div><div class="bar"><span style="width:0%;background:'+s.color+'" data-w="'+s.value+'"></span></div>';
+  ds.appendChild(d);
+});
+
+/* ---------- REVIEWS ---------- */
+let reviewIdx=0;
+const dotsEl=document.getElementById('review-dots');
+REVIEWS.forEach(function(_,i){
+  const b=document.createElement('button');
+  b.setAttribute('aria-label','Go to review '+(i+1));
+  if(i===0) b.classList.add('active');
+  b.addEventListener('click',function(){showReview(i);});
+  dotsEl.appendChild(b);
+});
+function showReview(i){
+  reviewIdx=i;
+  const r=REVIEWS[i];
+  document.getElementById('review-stars').textContent='★'.repeat(r.stars);
+  document.getElementById('review-text').textContent='"'+r.text+'"';
+  document.getElementById('review-name').textContent=r.name;
+  document.getElementById('review-vehicle').textContent=r.vehicle;
+  dotsEl.querySelectorAll('button').forEach(function(b,j){b.classList.toggle('active',j===i);});
+}
+showReview(0);
+document.getElementById('review-prev').addEventListener('click',function(){showReview((reviewIdx-1+REVIEWS.length)%REVIEWS.length);});
+document.getElementById('review-next').addEventListener('click',function(){showReview((reviewIdx+1)%REVIEWS.length);});
+
+/* ---------- BOOKING FORM ---------- */
+document.getElementById('booking-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  const name=document.getElementById('name').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const service=document.getElementById('service').value;
+  let ok=true;
+  document.getElementById('err-name').textContent=name?'':'Required';
+  document.getElementById('err-phone').textContent=phone?'':'Required';
+  document.getElementById('err-email').textContent=!email?'Required':(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)?'Invalid email':'');
+  document.getElementById('err-service').textContent=service?'':'Required';
+  if(!name||!phone||!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||!service) ok=false;
+  if(ok){
+    document.getElementById('booking-form').style.display='none';
+    document.getElementById('form-success').style.display='block';
+  }
+});
+
+/* ---------- SOUND TOGGLE ---------- */
+let soundOn=false;
+document.getElementById('sound-btn').addEventListener('click',function(){
+  soundOn=!soundOn;
+  this.textContent=soundOn?'🔊':'🔇';
+  this.setAttribute('aria-label',soundOn?'Mute ambient sound':'Enable ambient sound');
+});
+
+/* ---------- SCROLL REVEALS ---------- */
+function initReveals(){
+  const els=document.querySelectorAll('.reveal');
+  const io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        en.target.classList.add('visible');
+        // Animate diag bars when diagnostics section visible
+        if(en.target.closest('#diagnostics')){
+          document.querySelectorAll('.diag-stat .bar span').forEach(function(span){
+            span.style.width=span.getAttribute('data-w')+'%';
+          });
+        }
+      }
+    });
+  },{threshold:0.15,rootMargin:'0px 0px -40px 0px'});
+  els.forEach(function(el){io.observe(el);});
+  // Also observe diag section specifically
+  const diagSec=document.getElementById('diagnostics');
+  if(diagSec) io.observe(diagSec);
+}
+
+/* ============================================================
+   THREE.JS SCENES
+   ============================================================ */
+
+/* --- HERO SCENE --- */
+(function(){
+  const canvas=document.getElementById('hero-canvas');
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:!isMobile,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,isMobile?1.5:2));
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  renderer.shadowMap.enabled=!isMobile;
+  renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.1;
+
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x0a0a0a);
+  scene.fog=new THREE.Fog(0x0a0a0a,8,22);
+
+  const camera=new THREE.PerspectiveCamera(42,window.innerWidth/window.innerHeight,0.1,100);
+  camera.position.set(0,1.8,7);
+
+  scene.add(new THREE.AmbientLight(0xffffff,0.25));
+  const dir=new THREE.DirectionalLight(0xffffff,1.2);
+  dir.position.set(5,10,5);
+  dir.castShadow=!isMobile;
+  if(!isMobile){dir.shadow.mapSize.set(1024,1024);}
+  scene.add(dir);
+  const spot=new THREE.SpotLight(0x4488ff,0.8,20,0.4,0.5);
+  spot.position.set(-4,6,4); scene.add(spot);
+
+  createGarageEnv(scene);
+
+  // Car holder — load real GLB, fallback to detailed procedural
+  const carHolder = new THREE.Group();
+  carHolder.position.y = 0.35;
+  scene.add(carHolder);
+  let car = createCar(0x0f0f0f);
+  car.scale.setScalar(1.1);
+  carHolder.add(car);
+
+  // Prefer real GLB models (Khronos CarConcept / ToyCar CC samples)
+  const glbUrls = [
+    'models/car-concept.glb',
+    'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Assets@main/Models/CarConcept/glTF-Binary/CarConcept.glb',
+    'models/toycar.glb',
+    'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Assets@main/Models/ToyCar/glTF-Binary/ToyCar.glb'
+  ];
+  function tryLoadGlb(i){
+    if(i >= glbUrls.length || typeof THREE.GLTFLoader === 'undefined') return;
+    if(window.PRECISION_3D && PRECISION_3D.loadCar){
+      PRECISION_3D.loadCar(glbUrls[i], function(root){
+        carHolder.remove(car);
+        // Auto-scale to ~4.5 units long
+        const box = new THREE.Box3().setFromObject(root);
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z) || 1;
+        const scale = 4.5 / maxDim;
+        root.scale.setScalar(scale);
+        const center = box.getCenter(new THREE.Vector3());
+        root.position.sub(center.multiplyScalar(scale));
+        root.position.y -= box.min.y * scale;
+        car = root;
+        carHolder.add(car);
+        console.log('Loaded GLB:', glbUrls[i]);
+      }, function(){ tryLoadGlb(i+1); });
+    }
+  }
+  tryLoadGlb(0);
+
+  const particles=createParticles(scene);
+
+  // Bloom post-processing (photoreal glow on lights/emissives)
+  let composer = null;
+  if(!isMobile && window.PRECISION_3D && PRECISION_3D.setupBloom){
+    composer = PRECISION_3D.setupBloom(renderer, scene, camera, 0.5);
+  }
+
+  let mouseX=0,mouseY=0;
+  document.addEventListener('mousemove',function(e){
+    mouseX=(e.clientX/window.innerWidth)*2-1;
+    mouseY=-(e.clientY/window.innerHeight)*2+1;
+  });
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t+=0.016;
+    carHolder.position.y=0.35+Math.sin(t*0.6)*0.02;
+    carHolder.rotation.y=Math.sin(t*0.15)*0.05;
+    camera.position.x+=(mouseX*0.8-camera.position.x)*0.03;
+    camera.position.y+=(1.8+mouseY*0.4-camera.position.y)*0.03;
+    camera.lookAt(0,1.2,0);
+    const pos=particles.points.geometry.attributes.position.array;
+    for(let i=0;i<particles.count;i++){
+      pos[i*3]+=particles.velocities[i].x;
+      pos[i*3+1]+=particles.velocities[i].y;
+      pos[i*3+2]+=particles.velocities[i].z;
+      if(pos[i*3+1]>8){pos[i*3+1]=0;pos[i*3]=(Math.random()-0.5)*20;pos[i*3+2]=(Math.random()-0.5)*20;}
+    }
+    particles.points.geometry.attributes.position.needsUpdate=true;
+    if(composer) composer.render();
+    else renderer.render(scene,camera);
+  }
+  animate();
+
+  window.addEventListener('resize',function(){
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    if(composer) composer.setSize(window.innerWidth,window.innerHeight);
+  });
+})();
+
+/* --- INTERACTIVE GARAGE SCENE --- */
+(function(){
+  const canvas=document.getElementById('garage-canvas');
+  const wrap=document.getElementById('garage-canvas-wrap');
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:!isMobile,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,isMobile?1.5:2));
+  renderer.shadowMap.enabled=!isMobile;
+  renderer.outputEncoding=THREE.sRGBEncoding;
+
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x0d0d0d);
+
+  const camera=new THREE.PerspectiveCamera(40,1,0.1,100);
+  camera.position.set(4,2.5,5);
+
+  const controls=new THREE.OrbitControls(camera,canvas);
+  controls.enablePan=false;
+  controls.minDistance=3;
+  controls.maxDistance=10;
+  controls.maxPolarAngle=Math.PI/2.1;
+  controls.target.set(0,0.8,0);
+  controls.update();
+
+  scene.add(new THREE.AmbientLight(0xffffff,0.3));
+  const dir=new THREE.DirectionalLight(0xffffff,1.4);
+  dir.position.set(5,8,5); dir.castShadow=!isMobile; scene.add(dir);
+  const spot=new THREE.SpotLight(0x4488ff,0.7,20); spot.position.set(-3,5,3); scene.add(spot);
+
+  const carHolder=new THREE.Group(); carHolder.position.y=0.35; scene.add(carHolder);
+  let car=createCar(0x151515); carHolder.add(car);
+  if(window.PRECISION_3D && PRECISION_3D.loadCar){
+    PRECISION_3D.loadCar('https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Assets@main/Models/ToyCar/glTF-Binary/ToyCar.glb', function(root){
+      carHolder.remove(car);
+      const box=new THREE.Box3().setFromObject(root);
+      const size=box.getSize(new THREE.Vector3());
+      const scale=4.2/Math.max(size.x,size.y,size.z,1);
+      root.scale.setScalar(scale);
+      const c=box.getCenter(new THREE.Vector3());
+      root.position.sub(c.multiplyScalar(scale));
+      root.position.y-=box.min.y*scale;
+      car=root; carHolder.add(car);
+    });
+  }
+
+  // Hotspot markers (CSS2D-like via HTML overlay approach using raycasting)
+  const hotspotMeshes=[];
+  HOTSPOTS.forEach(function(h){
+    const geo=new THREE.SphereGeometry(0.08,16,16);
+    const mat=new THREE.MeshBasicMaterial({color:0x2563eb});
+    const mesh=new THREE.Mesh(geo,mat);
+    mesh.position.set(h.pos[0],h.pos[1],h.pos[2]);
+    mesh.userData=h;
+    scene.add(mesh);
+    // Glow ring
+    const ring=new THREE.Mesh(
+      new THREE.RingGeometry(0.12,0.16,24),
+      new THREE.MeshBasicMaterial({color:0x3b82f6,side:THREE.DoubleSide,transparent:true,opacity:0.5})
+    );
+    ring.position.copy(mesh.position);
+    scene.add(ring);
+    hotspotMeshes.push({mesh:mesh,ring:ring,data:h});
+  });
+
+  // Contact shadow approx
+  const shadowPlane=new THREE.Mesh(
+    new THREE.CircleGeometry(3,32),
+    new THREE.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0.3})
+  );
+  shadowPlane.rotation.x=-Math.PI/2; shadowPlane.position.y=0.02; scene.add(shadowPlane);
+
+  // Raycasting for hotspots
+  const raycaster=new THREE.Raycaster();
+  const mouse=new THREE.Vector2();
+  const panel=document.getElementById('hotspot-panel');
+  let activeHotspot=null;
+
+  function onClick(e){
+    const rect=canvas.getBoundingClientRect();
+    mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
+    mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
+    raycaster.setFromCamera(mouse,camera);
+    const hits=raycaster.intersectObjects(hotspotMeshes.map(function(h){return h.mesh;}));
+    if(hits.length>0){
+      const data=hits[0].object.userData;
+      if(activeHotspot===data.id){closePanel();return;}
+      activeHotspot=data.id;
+      document.getElementById('hs-label').textContent=data.label;
+      document.getElementById('hs-title').textContent=data.title;
+      document.getElementById('hs-desc').textContent=data.desc;
+      panel.classList.add('visible');
+      // Highlight
+      hotspotMeshes.forEach(function(h){
+        h.mesh.material.color.setHex(h.data.id===data.id?0xf59e0b:0x2563eb);
+        h.ring.material.opacity=h.data.id===data.id?0.9:0.5;
+      });
+    }
+  }
+  canvas.addEventListener('click',onClick);
+  // Touch support
+  canvas.addEventListener('touchend',function(e){
+    if(e.changedTouches.length){
+      const t=e.changedTouches[0];
+      onClick({clientX:t.clientX,clientY:t.clientY});
+    }
+  });
+
+  function closePanel(){
+    activeHotspot=null;
+    panel.classList.remove('visible');
+    hotspotMeshes.forEach(function(h){
+      h.mesh.material.color.setHex(0x2563eb);
+      h.ring.material.opacity=0.5;
+    });
+  }
+  document.getElementById('hotspot-close').addEventListener('click',closePanel);
+
+  function resize(){
+    const w=wrap.clientWidth,h=wrap.clientHeight;
+    camera.aspect=w/h; camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t+=0.016;
+    controls.update();
+    // Pulse rings
+    hotspotMeshes.forEach(function(h,i){
+      const s=1+Math.sin(t*2+i)*0.15;
+      h.ring.scale.set(s,s,s);
+      h.ring.lookAt(camera.position);
+    });
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+/* --- DIAGNOSTIC SCAN SCENE --- */
+(function(){
+  const canvas=document.getElementById('diag-canvas');
+  const wrap=document.getElementById('diag-canvas-wrap');
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.outputEncoding=THREE.sRGBEncoding;
+
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x050a12);
+
+  const camera=new THREE.PerspectiveCamera(40,1,0.1,100);
+  camera.position.set(0,2,8);
+
+  scene.add(new THREE.AmbientLight(0xffffff,0.2));
+  const pl=new THREE.PointLight(0x3b82f6,1,20); pl.position.set(0,5,0); scene.add(pl);
+
+  const car=createCar(0x0a1628);
+  car.scale.setScalar(1.2); scene.add(car);
+
+  // Wireframe overlay
+  const wireGeo=new THREE.BoxGeometry(2.0,1.3,4.4);
+  const wireMat=new THREE.MeshBasicMaterial({color:0x2563eb,wireframe:true,transparent:true,opacity:0.15});
+  const wire=new THREE.Mesh(wireGeo,wireMat);
+  wire.position.y=0.7; scene.add(wire);
+
+  // Scan plane
+  const scanMat=new THREE.MeshBasicMaterial({color:0x3b82f6,transparent:true,opacity:0.25,side:THREE.DoubleSide,depthWrite:false});
+  const scan=new THREE.Mesh(new THREE.PlaneGeometry(3,5),scanMat);
+  scan.rotation.x=-Math.PI/2; scene.add(scan);
+
+  function resize(){
+    const w=wrap.clientWidth,h=wrap.clientHeight;
+    camera.aspect=w/h; camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t+=0.016;
+    car.rotation.y=t*0.15;
+    wire.rotation.y=t*0.15;
+    scan.position.y=((t*0.8)%2.5)-0.5;
+    scan.rotation.y=t*0.15;
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+/* --- BRAKE SCENE --- */
+(function(){
+  const canvas=document.getElementById('brake-canvas');
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.outputEncoding=THREE.sRGBEncoding;
+
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x0d0d0d);
+
+  const camera=new THREE.PerspectiveCamera(40,1,0.1,100);
+  camera.position.set(3,1.5,3);
+  camera.lookAt(0,0,0);
+
+  scene.add(new THREE.AmbientLight(0xffffff,0.3));
+  const dir=new THREE.DirectionalLight(0xffffff,1.5); dir.position.set(4,5,3); scene.add(dir);
+  const amber=new THREE.PointLight(0xf59e0b,0.5,10); amber.position.set(-2,2,2); scene.add(amber);
+
+  const group=new THREE.Group();
+  // Disc
+  const disc=new THREE.Mesh(
+    new THREE.CylinderGeometry(1.2,1.2,0.12,48),
+    new THREE.MeshStandardMaterial({color:0x444444,metalness:0.9,roughness:0.25,emissive:0x331100,emissiveIntensity:0.15})
+  );
+  group.add(disc);
+  // Hub
+  const hub=new THREE.Mesh(
+    new THREE.CylinderGeometry(0.35,0.35,0.18,16),
+    new THREE.MeshStandardMaterial({color:0x222222,metalness:0.8,roughness:0.3})
+  );
+  group.add(hub);
+  // Caliper
+  const caliper=new THREE.Mesh(
+    new THREE.BoxGeometry(0.45,0.7,0.5),
+    new THREE.MeshStandardMaterial({color:0x1a1a1a,metalness:0.6,roughness:0.4})
+  );
+  caliper.position.set(1.35,0,0); group.add(caliper);
+  // Pads
+  const padMat=new THREE.MeshStandardMaterial({color:0x333333});
+  const pad1=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.5,0.15),padMat); pad1.position.set(1.15,0,0.12); group.add(pad1);
+  const pad2=new THREE.Mesh(new THREE.BoxGeometry(0.08,0.5,0.15),padMat); pad2.position.set(1.15,0,-0.12); group.add(pad2);
+  // Heat ring
+  const heat=new THREE.Mesh(
+    new THREE.TorusGeometry(1.22,0.03,8,48),
+    new THREE.MeshBasicMaterial({color:0xf59e0b,transparent:true,opacity:0.4})
+  );
+  heat.rotation.x=Math.PI/2; group.add(heat);
+
+  scene.add(group);
+
+  function resize(){
+    const w=canvas.parentElement.clientWidth;
+    const h=400;
+    camera.aspect=w/h; camera.updateProjectionMatrix();
+    renderer.setSize(w,h);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  let t=0;
+  function animate(){
+    requestAnimationFrame(animate);
+    t+=0.016;
+    disc.rotation.z=t*1.5;
+    heat.material.opacity=0.3+Math.sin(t*3)*0.15;
+    renderer.render(scene,camera);
+  }
+  animate();
+})();
+
+})();
+</script>
+</body>
+</html>
