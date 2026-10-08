@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Precision Auto Repair | Advanced Diagnostics & Premium Service</title>
 <meta name="description" content="Experience next-generation auto repair. Advanced computer diagnostics, ASE-certified technicians, brake repair, engine diagnostics, transmission service and more. Book your service today."/>
 <meta name="robots" content="index, follow"/>
@@ -23,8 +23,10 @@
   --carbon-950:#0d0d0d;--carbon-900:#1a1a1a;--carbon-800:#222;--carbon-700:#333;
   --carbon-400:#888;--carbon-300:#aaa;--white:#fff;
 }
-html{scroll-behavior:smooth}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--carbon-950);color:var(--white);overflow-x:hidden;cursor:none}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--carbon-950);color:var(--white);overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,canvas,svg{max-width:100%}
+button,.btn,input,select,textarea{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 body.is-mobile{cursor:auto}
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:#1a1a1a}
@@ -246,15 +248,35 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px 0;background:var(
   .stats-grid .stat-card:last-child{grid-column:1/-1}
   .diag-stats{grid-template-columns:repeat(2,1fr)}
   .form-row{grid-template-columns:1fr}
-  .hero-content{padding-bottom:80px;justify-content:flex-end}
-  #garage-canvas-wrap{height:55vh}
-  #diag-canvas-wrap{height:50vh}
+  .hero-content{padding:0 18px calc(96px + env(safe-area-inset-bottom));justify-content:flex-end}
+  .hero-content h1{font-size:clamp(2rem,10vw,3.2rem)}
+  .hero-ctas{width:100%;flex-direction:column}
+  .hero-ctas .btn{width:100%;min-height:52px}
+  #garage-canvas-wrap{height:62vh;min-height:340px}
+  #diag-canvas-wrap{height:52vh;min-height:300px}
+  #brake-canvas{height:280px}
+  .hotspot-panel{left:12px;right:12px;bottom:12px;max-width:none}
+  .section-title{font-size:clamp(1.7rem,8vw,2.5rem)}
+  section{padding-left:0;padding-right:0}
+  .container{padding:0 16px}
+  .nav-inner{padding:0 14px}
+  header{padding-top:max(12px,env(safe-area-inset-top))}
+  .emergency-ctas{flex-direction:column}
+  .emergency-ctas .btn{width:100%;min-height:50px}
+  .btn{min-height:48px}
+  input,select,textarea{font-size:16px}
+  .review-nav button,.menu-toggle{min-width:44px;min-height:44px}
+  #sound-btn{bottom:calc(16px + env(safe-area-inset-bottom));right:14px}
+  .footer-inner{gap:14px}
 }
 @media(max-width:600px){
-  .services-grid{grid-template-columns:1fr 1fr}
+  .services-grid{grid-template-columns:1fr}
   .brake-cards{grid-template-columns:1fr}
-  .diag-stats{grid-template-columns:1fr 1fr}
-  .review-card{padding:32px 20px}
+  .diag-stats{grid-template-columns:1fr 1fr;gap:8px}
+  .review-card{padding:28px 16px}
+  .booking-form{padding:22px 14px}
+  .emergency-box{padding:28px 16px}
+  .footer-inner{flex-direction:column;text-align:center}
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -967,8 +989,9 @@ function initReveals(){
 /* --- HERO SCENE --- */
 (function(){
   const canvas=document.getElementById('hero-canvas');
-  const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:!isMobile,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,isMobile?1.5:2));
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,isMobile?2:3));
+  renderer.antialias=true;
   renderer.setSize(window.innerWidth,window.innerHeight);
   renderer.shadowMap.enabled=!isMobile;
   renderer.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -978,16 +1001,16 @@ function initReveals(){
 
   const scene=new THREE.Scene();
   scene.background=new THREE.Color(0x0a0a0a);
-  scene.fog=new THREE.Fog(0x0a0a0a,12,32);
+  scene.fog=new THREE.Fog(0x0a0a0a,8,22);
 
-  const camera=new THREE.PerspectiveCamera(36,window.innerWidth/window.innerHeight,0.1,100);
-  camera.position.set(0,1.55,5.2);
+  const camera=new THREE.PerspectiveCamera(42,window.innerWidth/window.innerHeight,0.1,100);
+  camera.position.set(0,1.8,7);
 
   scene.add(new THREE.AmbientLight(0xffffff,0.25));
   const dir=new THREE.DirectionalLight(0xffffff,1.2);
   dir.position.set(5,10,5);
   dir.castShadow=!isMobile;
-  if(!isMobile){dir.shadow.mapSize.set(1024,1024);}
+  if(!isMobile){dir.shadow.mapSize.set(2048,2048);}
   scene.add(dir);
   const spot=new THREE.SpotLight(0x4488ff,0.8,20,0.4,0.5);
   spot.position.set(-4,6,4); scene.add(spot);
@@ -999,7 +1022,7 @@ function initReveals(){
   carHolder.position.y = 0.35;
   scene.add(carHolder);
   let car = createCar(0x0f0f0f);
-  car.scale.setScalar(2.05);
+  car.scale.setScalar(1.1);
   carHolder.add(car);
 
   // Prefer real GLB models (Khronos CarConcept / ToyCar CC samples)
@@ -1018,7 +1041,7 @@ function initReveals(){
         const box = new THREE.Box3().setFromObject(root);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z) || 1;
-        const scale = 11 / maxDim;
+        const scale = 4.5 / maxDim;
         root.scale.setScalar(scale);
         const center = box.getCenter(new THREE.Vector3());
         root.position.sub(center.multiplyScalar(scale));
@@ -1051,9 +1074,9 @@ function initReveals(){
     t+=0.016;
     carHolder.position.y=0.35+Math.sin(t*0.6)*0.02;
     carHolder.rotation.y=Math.sin(t*0.15)*0.05;
-    camera.position.x+=(mouseX*1.1-camera.position.x)*0.03;
-    camera.position.y+=(1.55+mouseY*0.35-camera.position.y)*0.03;
-    camera.lookAt(0,0.85,0);
+    camera.position.x+=(mouseX*0.8-camera.position.x)*0.03;
+    camera.position.y+=(1.8+mouseY*0.4-camera.position.y)*0.03;
+    camera.lookAt(0,1.2,0);
     const pos=particles.points.geometry.attributes.position.array;
     for(let i=0;i<particles.count;i++){
       pos[i*3]+=particles.velocities[i].x;
@@ -1070,8 +1093,9 @@ function initReveals(){
   window.addEventListener('resize',function(){
     camera.aspect=window.innerWidth/window.innerHeight;
     camera.updateProjectionMatrix();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,isMobile?2:3));
     renderer.setSize(window.innerWidth,window.innerHeight);
-    if(composer) composer.setSize(window.innerWidth,window.innerHeight);
+    if(composer){composer.setPixelRatio(Math.min(window.devicePixelRatio||1,3));composer.setSize(window.innerWidth,window.innerHeight);}
   });
 })();
 
@@ -1079,8 +1103,9 @@ function initReveals(){
 (function(){
   const canvas=document.getElementById('garage-canvas');
   const wrap=document.getElementById('garage-canvas-wrap');
-  const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:!isMobile,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,isMobile?1.5:2));
+  const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,isMobile?2:3));
+  renderer.antialias=true;
   renderer.shadowMap.enabled=!isMobile;
   renderer.outputEncoding=THREE.sRGBEncoding;
 
@@ -1088,14 +1113,14 @@ function initReveals(){
   scene.background=new THREE.Color(0x0d0d0d);
 
   const camera=new THREE.PerspectiveCamera(40,1,0.1,100);
-  camera.position.set(5.2,2.8,6.2);
+  camera.position.set(4,2.5,5);
 
   const controls=new THREE.OrbitControls(camera,canvas);
   controls.enablePan=false;
-  controls.minDistance=4;
-  controls.maxDistance=14;
+  controls.minDistance=3;
+  controls.maxDistance=10;
   controls.maxPolarAngle=Math.PI/2.1;
-  controls.target.set(0,1.1,0);
+  controls.target.set(0,0.8,0);
   controls.update();
 
   scene.add(new THREE.AmbientLight(0xffffff,0.3));
@@ -1104,13 +1129,13 @@ function initReveals(){
   const spot=new THREE.SpotLight(0x4488ff,0.7,20); spot.position.set(-3,5,3); scene.add(spot);
 
   const carHolder=new THREE.Group(); carHolder.position.y=0.35; scene.add(carHolder);
-  let car=createCar(0x151515); car.scale.setScalar(1.9); carHolder.add(car);
+  let car=createCar(0x151515); carHolder.add(car);
   if(window.PRECISION_3D && PRECISION_3D.loadCar){
     PRECISION_3D.loadCar('https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Assets@main/Models/ToyCar/glTF-Binary/ToyCar.glb', function(root){
       carHolder.remove(car);
       const box=new THREE.Box3().setFromObject(root);
       const size=box.getSize(new THREE.Vector3());
-      const scale=9/Math.max(size.x,size.y,size.z,1);
+      const scale=4.2/Math.max(size.x,size.y,size.z,1);
       root.scale.setScalar(scale);
       const c=box.getCenter(new THREE.Vector3());
       root.position.sub(c.multiplyScalar(scale));
@@ -1220,7 +1245,7 @@ function initReveals(){
   const canvas=document.getElementById('diag-canvas');
   const wrap=document.getElementById('diag-canvas-wrap');
   const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,isMobile?2:3));
   renderer.outputEncoding=THREE.sRGBEncoding;
 
   const scene=new THREE.Scene();
@@ -1233,7 +1258,7 @@ function initReveals(){
   const pl=new THREE.PointLight(0x3b82f6,1,20); pl.position.set(0,5,0); scene.add(pl);
 
   const car=createCar(0x0a1628);
-  car.scale.setScalar(1.85); scene.add(car);
+  car.scale.setScalar(1.2); scene.add(car);
 
   // Wireframe overlay
   const wireGeo=new THREE.BoxGeometry(2.0,1.3,4.4);
@@ -1271,7 +1296,7 @@ function initReveals(){
 (function(){
   const canvas=document.getElementById('brake-canvas');
   const renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,isMobile?2:3));
   renderer.outputEncoding=THREE.sRGBEncoding;
 
   const scene=new THREE.Scene();
