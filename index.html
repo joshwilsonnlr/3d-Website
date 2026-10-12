@@ -1196,12 +1196,12 @@ function seatVehicle(root, targetLen){
   const hotspotMeshes=[];
   HOTSPOTS.forEach(function(h){
     const mat=new THREE.MeshBasicMaterial({color:0x3b82f6,depthTest:false,depthWrite:false});
-    const mesh=new THREE.Mesh(new THREE.SphereGeometry(0.42,24,24), mat);
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(0.2,20,20), mat);
     mesh.renderOrder=20;
     mesh.userData=h;
     scene.add(mesh);
     const ring=new THREE.Mesh(
-      new THREE.RingGeometry(0.58,0.82,32),
+      new THREE.RingGeometry(0.28,0.4,28),
       new THREE.MeshBasicMaterial({color:0x60a5fa,side:THREE.DoubleSide,transparent:true,opacity:0.9,depthTest:false,depthWrite:false})
     );
     ring.renderOrder=19;
