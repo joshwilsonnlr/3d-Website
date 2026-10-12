@@ -119,6 +119,9 @@ section{position:relative}
 .hotspot-panel p{font-size:13px;color:var(--carbon-300);line-height:1.6}
 .hotspot-panel .close-btn{position:absolute;top:12px;right:14px;background:none;border:none;color:#888;font-size:16px;cursor:pointer}
 .garage-hint{text-align:center;font-size:11px;color:#666;letter-spacing:.15em;text-transform:uppercase;margin-top:12px}
+.inspect-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:980px;margin:14px auto 0;padding:0 16px}
+.inspect-bar button{background:#111;color:#fff;border:1px solid rgba(255,255,255,.18);padding:10px 14px;font:600 11px/1 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;min-height:44px}
+.inspect-bar button.active{border-color:#f59e0b;color:#f59e0b}
 
 /* Diagnostics */
 #diagnostics{padding:100px 0;background:#050a12}
@@ -375,7 +378,8 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:40px 0;background:var(
       <a href="#booking" style="display:inline-block;margin-top:14px;color:var(--electric-l);font-size:11px;font-weight:600;letter-spacing:.1em;text-decoration:none" data-cursor="open">BOOK THIS SERVICE →</a>
     </div>
   </div>
-  <p class="garage-hint">Drag to rotate · Scroll to zoom · Click hotspots to inspect</p>
+  <div class="inspect-bar" id="inspect-bar"></div>
+  <p class="garage-hint">Click a marker or a part name · camera flies to that component</p>
 </section>
 
 <!-- ========== DIAGNOSTICS ========== -->
@@ -982,6 +986,33 @@ function initReveals(){
   if(diagSec) io.observe(diagSec);
 }
 
+function seatVehicle(root, targetLen){
+  root.rotation.set(0,0,0);
+  root.scale.set(1,1,1);
+  root.position.set(0,0,0);
+  root.updateMatrixWorld(true);
+  let box=new THREE.Box3().setFromObject(root);
+  let size=box.getSize(new THREE.Vector3());
+  const axes=[{k:'x',v:size.x},{k:'y',v:size.y},{k:'z',v:size.z}].sort(function(a,b){return b.v-a.v;});
+  const lengthA=axes[0].k, upA=axes[2].k;
+  if(upA==='z' && lengthA==='y') root.rotation.x=-Math.PI/2;
+  else if(upA==='z' && lengthA==='x'){ root.rotation.x=-Math.PI/2; root.rotation.y=Math.PI/2; }
+  else if(upA==='x' && lengthA==='z') root.rotation.z=Math.PI/2;
+  else if(upA==='x' && lengthA==='y'){ root.rotation.z=Math.PI/2; root.rotation.y=Math.PI/2; }
+  root.updateMatrixWorld(true);
+  box=new THREE.Box3().setFromObject(root);
+  size=box.getSize(new THREE.Vector3());
+  const maxDim=Math.max(size.x,size.y,size.z)||1;
+  root.scale.setScalar(targetLen/maxDim);
+  root.updateMatrixWorld(true);
+  box=new THREE.Box3().setFromObject(root);
+  const c=box.getCenter(new THREE.Vector3());
+  root.position.x-=c.x;
+  root.position.z-=c.z;
+  root.position.y-=box.min.y;
+  root.updateMatrixWorld(true);
+}
+
 /* ============================================================
    THREE.JS SCENES
    ============================================================ */
@@ -1047,14 +1078,7 @@ function initReveals(){
         });
         carHolder.remove(car);
         // Auto-scale so the car fills the hero frame (~11 units long)
-        const box = new THREE.Box3().setFromObject(root);
-        const size = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z) || 1;
-        const scale = 4.5 / maxDim;
-        root.scale.setScalar(scale);
-        const center = box.getCenter(new THREE.Vector3());
-        root.position.sub(center.multiplyScalar(scale));
-        root.position.y -= box.min.y * scale;
+        seatVehicle(root, 6.8);
         car = root;
         carHolder.add(car);
         console.log('Loaded GLB:', glbUrls[i]);
@@ -1121,15 +1145,15 @@ function initReveals(){
   const scene=new THREE.Scene();
   scene.background=new THREE.Color(0x0d0d0d);
 
-  const camera=new THREE.PerspectiveCamera(40,1,0.1,100);
-  camera.position.set(4,2.5,5);
+  const camera=new THREE.PerspectiveCamera(30,1,0.1,200);
+  camera.position.set(7.2,3.2,9.2);
 
   const controls=new THREE.OrbitControls(camera,canvas);
   controls.enablePan=false;
   controls.enableZoom=true;
-  controls.zoomSpeed=1.35;
-  controls.minDistance=1.4;
-  controls.maxDistance=12;
+  controls.zoomSpeed=1.6;
+  controls.minDistance=1.2;
+  controls.maxDistance=24;
   controls.maxPolarAngle=Math.PI/2.1;
   controls.target.set(0,0.8,0);
   controls.update();
@@ -1161,13 +1185,7 @@ function initReveals(){
           });
         }
       });
-      const box0=new THREE.Box3().setFromObject(root);
-      const size=box0.getSize(new THREE.Vector3());
-      const scale=7.4/Math.max(size.x,size.y,size.z,1);
-      root.scale.setScalar(scale);
-      const c=box0.getCenter(new THREE.Vector3());
-      root.position.sub(c.multiplyScalar(scale));
-      root.position.y-=box0.min.y*scale;
+      seatVehicle(root, 10);
       car=root; carHolder.add(car);
       placeHotspots();
     }, function(){ loadInspect(i+1); });
@@ -1177,34 +1195,66 @@ function initReveals(){
   // Hotspot markers (CSS2D-like via HTML overlay approach using raycasting)
   const hotspotMeshes=[];
   HOTSPOTS.forEach(function(h){
-    const mesh=new THREE.Mesh(new THREE.SphereGeometry(0.16,20,20), new THREE.MeshBasicMaterial({color:0x2563eb}));
-    mesh.position.set(h.pos[0]*1.6,h.pos[1]*1.35,h.pos[2]*1.6);
+    const mat=new THREE.MeshBasicMaterial({color:0x3b82f6,depthTest:false,depthWrite:false});
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(0.42,24,24), mat);
+    mesh.renderOrder=20;
     mesh.userData=h;
     scene.add(mesh);
     const ring=new THREE.Mesh(
-      new THREE.RingGeometry(0.22,0.30,28),
-      new THREE.MeshBasicMaterial({color:0x3b82f6,side:THREE.DoubleSide,transparent:true,opacity:0.55})
+      new THREE.RingGeometry(0.58,0.82,32),
+      new THREE.MeshBasicMaterial({color:0x60a5fa,side:THREE.DoubleSide,transparent:true,opacity:0.9,depthTest:false,depthWrite:false})
     );
-    ring.position.copy(mesh.position);
+    ring.renderOrder=19;
     scene.add(ring);
-    hotspotMeshes.push({mesh:mesh,ring:ring,data:h});
+    hotspotMeshes.push({mesh:mesh,ring:ring,data:h,view:new THREE.Vector3(0,0.4,1)});
   });
+  function findNamed(name){
+    let found=null;
+    carHolder.traverse(function(o){ if(!found && o.name===name) found=o; });
+    return found;
+  }
+  function centerOf(name){
+    const o=findNamed(name);
+    if(!o) return null;
+    return new THREE.Box3().setFromObject(o).getCenter(new THREE.Vector3());
+  }
   function placeHotspots(){
+    const hood=centerOf('BodyHood')||centerOf('Engine');
+    const tail=centerOf('BodyTaillights');
     const box=new THREE.Box3().setFromObject(carHolder);
-    const min=box.min, max=box.max;
-    const x=function(t){return min.x+(max.x-min.x)*t;};
-    const y=function(t){return min.y+(max.y-min.y)*t;};
-    const z=function(t){return min.z+(max.z-min.z)*t;};
-    const spots={
-      engine:[0.5,0.72,0.82], brakes:[0.12,0.28,0.78], tires:[0.88,0.22,0.78],
-      suspension:[0.18,0.38,0.42], battery:[0.62,0.62,0.74], transmission:[0.5,0.32,0.45],
-      exhaust:[0.5,0.22,0.08], ac:[0.58,0.7,0.55]
-    };
-    hotspotMeshes.forEach(function(h){
-      const s=spots[h.data.id]||[0.5,0.5,0.5];
-      h.mesh.position.set(x(s[0]), y(s[1]), z(s[2]));
-      h.ring.position.copy(h.mesh.position);
-    });
+    const mid=box.getCenter(new THREE.Vector3());
+    const up=new THREE.Vector3(0,1,0);
+    let forward=new THREE.Vector3(0,0,1);
+    if(hood && tail){
+      forward=hood.clone().sub(tail); forward.y=0;
+      if(forward.lengthSq()<1e-4) forward.set(0,0,1);
+      forward.normalize();
+    }
+    const right=new THREE.Vector3().crossVectors(up, forward).normalize();
+    function spot(id, base, dir){
+      const h=hotspotMeshes.find(function(x){return x.data.id===id;});
+      if(!h) return;
+      const d=dir.clone();
+      if(d.lengthSq()<1e-6) d.copy(up);
+      d.normalize();
+      const p=(base?base.clone():mid.clone()).add(d.clone().multiplyScalar(0.95));
+      h.mesh.position.copy(p);
+      h.ring.position.copy(p);
+      h.view=d;
+    }
+    const brake=centerOf('WheelFrontLBrakeDisc')||centerOf('WheelFrontL');
+    const tire=centerOf('WheelFrontR')||centerOf('WheelRearR');
+    const susp=centerOf('WheelRearL')||centerOf('WheelRearLRim');
+    const wind=centerOf('BodyWindshield');
+    const under=centerOf('BodyUnderside');
+    spot('engine', hood||mid.clone().add(forward.clone().multiplyScalar(box.getSize(new THREE.Vector3()).z*0.35)), up.clone().add(forward));
+    spot('brakes', brake, right.clone().negate().add(up.clone().multiplyScalar(0.15)));
+    spot('tires', tire, right.clone().add(up.clone().multiplyScalar(0.05)));
+    spot('suspension', susp, right.clone().negate().add(up.clone().multiplyScalar(0.35)));
+    spot('battery', centerOf('BodyHeadlights')||hood, up.clone().multiplyScalar(0.8).add(right.clone().multiplyScalar(0.35)));
+    spot('transmission', under||mid, up.clone().negate());
+    spot('exhaust', tail, forward.clone().negate().add(up.clone().multiplyScalar(-0.35)));
+    spot('ac', wind||hood, up.clone().add(forward.clone().multiplyScalar(0.15)));
   }
 
   // Contact shadow approx
@@ -1219,35 +1269,62 @@ function initReveals(){
   const mouse=new THREE.Vector2();
   const panel=document.getElementById('hotspot-panel');
   let activeHotspot=null;
-  const homePos=new THREE.Vector3(4,2.5,5);
-  const homeTarget=new THREE.Vector3(0,0.9,0);
-  const camGoal=homePos.clone();
-  const lookGoal=homeTarget.clone();
+  const homePos=camera.position.clone();
+  const homeTarget=new THREE.Vector3(0,1.15,0);
+  controls.target.copy(homeTarget);
+  let zoomAnim=null;
 
-  let autoMove=false;
-  canvas.addEventListener('pointerdown',function(){ autoMove=false; });
+  function flyTo(look, view){
+    const dir=(view&&view.lengthSq()>0.001)?view.clone().normalize():new THREE.Vector3(0.4,0.35,1).normalize();
+    const cam=look.clone().add(dir.multiplyScalar(3.6)).add(new THREE.Vector3(0,0.35,0));
+    controls.enabled=false;
+    zoomAnim={t:0,a:camera.position.clone(),b:cam,c:controls.target.clone(),d:look.clone()};
+  }
+  function showPart(entry){
+    if(!entry) return;
+    if(activeHotspot===entry.data.id){ closePanel(); return; }
+    activeHotspot=entry.data.id;
+    document.getElementById('hs-label').textContent=entry.data.label;
+    document.getElementById('hs-title').textContent=entry.data.title;
+    document.getElementById('hs-desc').textContent=entry.data.desc;
+    panel.classList.add('visible');
+    flyTo(entry.mesh.position.clone(), entry.view);
+    hotspotMeshes.forEach(function(h){
+      const on=h.data.id===entry.data.id;
+      h.mesh.material.color.setHex(on?0xf59e0b:0x3b82f6);
+      h.ring.material.color.setHex(on?0xf59e0b:0x60a5fa);
+      h.ring.material.opacity=on?1:0.75;
+    });
+    document.querySelectorAll('#inspect-bar button').forEach(function(b){
+      b.classList.toggle('active', b.dataset.id===entry.data.id);
+    });
+  }
+  function nearest(point){
+    let best=hotspotMeshes[0], bd=Infinity;
+    hotspotMeshes.forEach(function(h){
+      const d=h.mesh.position.distanceToSquared(point);
+      if(d<bd){ bd=d; best=h; }
+    });
+    return best;
+  }
+  window.PRECISION_INSPECT=function(id){
+    const h=hotspotMeshes.find(function(x){return x.data.id===id;});
+    showPart(h);
+  };
 
   function onClick(e){
     const rect=canvas.getBoundingClientRect();
     mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
     mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
     raycaster.setFromCamera(mouse,camera);
-    raycaster.params.Points.threshold=0.2;
     const hits=raycaster.intersectObjects(hotspotMeshes.map(function(h){return h.mesh;}));
-    if(hits.length>0){
-      const data=hits[0].object.userData;
-      if(activeHotspot===data.id){closePanel();return;}
-      activeHotspot=data.id;
-      document.getElementById('hs-label').textContent=data.label;
-      document.getElementById('hs-title').textContent=data.title;
-      document.getElementById('hs-desc').textContent=data.desc;
-      panel.classList.add('visible');
-      zoomToPoint(hits[0].object.position);
-      hotspotMeshes.forEach(function(h){
-        h.mesh.material.color.setHex(h.data.id===data.id?0xf59e0b:0x2563eb);
-        h.ring.material.opacity=h.data.id===data.id?0.9:0.5;
-      });
+    if(hits.length){
+      const entry=hotspotMeshes.find(function(h){return h.mesh===hits[0].object;});
+      showPart(entry);
+      return;
     }
+    const body=raycaster.intersectObject(carHolder, true);
+    if(body.length) showPart(nearest(body[0].point));
   }
   canvas.addEventListener('click',onClick);
   // Touch support
@@ -1258,25 +1335,26 @@ function initReveals(){
     }
   });
 
-  function zoomToPoint(point){
-    const offset=new THREE.Vector3(1.15,0.85,1.55);
-    camGoal.copy(point).add(offset);
-    lookGoal.copy(point);
-    controls.minDistance=1.15;
-    autoMove=true;
-  }
   function closePanel(){
     activeHotspot=null;
     panel.classList.remove('visible');
-    camGoal.copy(homePos);
-    lookGoal.copy(homeTarget);
-    autoMove=true;
+    controls.enabled=false;
+    zoomAnim={t:0,a:camera.position.clone(),b:homePos.clone(),c:controls.target.clone(),d:homeTarget.clone()};
     hotspotMeshes.forEach(function(h){
-      h.mesh.material.color.setHex(0x2563eb);
-      h.ring.material.opacity=0.5;
+      h.mesh.material.color.setHex(0x3b82f6);
+      h.ring.material.color.setHex(0x60a5fa);
+      h.ring.material.opacity=0.85;
     });
+    document.querySelectorAll('#inspect-bar button').forEach(function(b){ b.classList.remove('active'); });
   }
   document.getElementById('hotspot-close').addEventListener('click',closePanel);
+  const bar=document.getElementById('inspect-bar');
+  HOTSPOTS.forEach(function(h){
+    const b=document.createElement('button');
+    b.type='button'; b.dataset.id=h.id; b.textContent=h.label;
+    b.addEventListener('click', function(){ window.PRECISION_INSPECT(h.id); });
+    bar.appendChild(b);
+  });
 
   function resize(){
     const w=wrap.clientWidth,h=wrap.clientHeight;
@@ -1292,11 +1370,15 @@ function initReveals(){
   function animate(){
     requestAnimationFrame(animate);
     t+=0.016;
-    controls.update();
-    if(autoMove){
-      camera.position.lerp(camGoal,0.1);
-      controls.target.lerp(lookGoal,0.12);
-      if(camera.position.distanceTo(camGoal)<0.05) autoMove=false;
+    if(zoomAnim){
+      zoomAnim.t=Math.min(1, zoomAnim.t+0.04);
+      const k=1-Math.pow(1-zoomAnim.t,3);
+      camera.position.lerpVectors(zoomAnim.a, zoomAnim.b, k);
+      controls.target.lerpVectors(zoomAnim.c, zoomAnim.d, k);
+      camera.lookAt(controls.target);
+      if(zoomAnim.t>=1){ zoomAnim=null; controls.enabled=true; controls.update(); }
+    } else {
+      controls.update();
     }
     // Pulse rings
     hotspotMeshes.forEach(function(h,i){
