@@ -13,8 +13,19 @@ window.PRECISION_3D = {
           c.castShadow = true;
           c.receiveShadow = true;
           if(c.material){
-            c.material.envMapIntensity = 1.2;
-            if(c.material.metalness !== undefined) c.material.metalness = Math.max(c.material.metalness, 0.4);
+            var mats = Array.isArray(c.material) ? c.material : [c.material];
+            mats.forEach(function(m){
+              m.envMapIntensity = 1.6;
+              ['map','normalMap','roughnessMap','metalnessMap','emissiveMap','aoMap'].forEach(function(k){
+                if(!m[k]) return;
+                m[k].anisotropy = 16;
+                m[k].minFilter = THREE.LinearMipmapLinearFilter;
+                m[k].magFilter = THREE.LinearFilter;
+                m[k].generateMipmaps = true;
+                m[k].needsUpdate = true;
+              });
+              if(m.map) m.map.encoding = THREE.sRGBEncoding;
+            });
           }
         }
       });
@@ -181,7 +192,7 @@ window.PRECISION_3D = {
     composer.addPass(renderPass);
     var bloom = new THREE.UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      strength || 0.45, 0.4, 0.85
+      strength || 0.18, 0.25, 0.96
     );
     composer.addPass(bloom);
     return composer;
